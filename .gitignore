@@ -1,0 +1,13 @@
+# JetBrains IDEs (CLion, IntelliJ, and PyCharm)
+.idea
+
+# CLIion CMake builds
+cmake-build-debug
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+#misc
+*.exe
