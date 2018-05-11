@@ -1,5 +1,5 @@
 def highest_product_of_3(list_of_ints):
-    res = None
+    res = -float('inf')
 
     if len(list_of_ints) < 3:
         return 0
@@ -29,7 +29,7 @@ def highest_product_of_3(list_of_ints):
 
     if big3 > 0:
         res = big1 * big2 * big3
-    if neg2 != -float('inf') and big1 > 0:
+    if neg2 != float('inf') and big1 > 0:
         res = max(res, neg1 * neg2 * big1)
     if big1 < 0:
         res = max(res, big1*big2*big3)
