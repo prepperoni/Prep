@@ -1,7 +1,8 @@
 '''
-       5
-  3         7
-1   4     6   8
+	       5
+	  3         7
+	1   4     6   8
+   x x|x x   x x|x x
 '''
 
 def helper(node, vals):
@@ -21,3 +22,17 @@ def checker(root):
 			return False
 
 	return True
+
+
+#website solution
+def checker2(root)
+	return helper2(root, -float('inf'), float('inf'))
+
+def helper2(node, rangeStart, rangeEnd):
+	if not node:
+		return True
+
+	if node.val <= rangeStart or node.val >= rangeEnd:
+		return False 
+	
+	return helper2(node.left, rangeStart, node.val) and helper2(node.right, node.val, rangeEnd)
