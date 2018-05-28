@@ -1,15 +1,11 @@
-class TrieNode:
-	def __init__(self):
-		self.children = {}
-
 def make_trie(string_set):
-	trieRoot = TrieNode()
+	trieRoot = {}
 
 	for string in string_set:
 		curNode = trieRoot
 		for char in string:
 			if char not in curNode.children:
-				curNode.children[char] = TrieNode()
+				curNode.children[char] = {}
 			curNode = curNode.children[char]
 		curNode.children['*'] = None
 
