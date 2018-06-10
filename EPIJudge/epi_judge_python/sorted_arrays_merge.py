@@ -2,25 +2,27 @@ from heapq import heappush, heappop
 
 def merge_sorted_arrays(sorted_arrays):
     res = []
-    arrayCount = len(sorted_arrays)
-    arrayIdicies = [0] * arrayCount
     heap = []
+    iterators = [iter(x) for x in sorted_arrays]
     #intialize heap with values from all arrays (arrVal, arrIndx)
-    for i in range(arrayCount):
-    	if sorted_arrays[i]:
-    		heappush(heap, (sorted_arrays[i][0], i))
+    for arrIdx, iterator in enumerate(iterators):
+    	val = next(iterator, None)
+    	if val is not None:
+    		heappush(heap, (val, arrIdx))
 
     #after popping, add the next item on that list if there is any
     while heap:
     	smallest = heappop(heap)
     	val, arrIdx = smallest
     	res.append(val)
-    	arrayIdicies[arrIdx] += 1
+    	nextVal = next(iterators[arrIdx], None)
 
-    	if arrayIdicies[arrIdx] < len(sorted_arrays[arrIdx]):
-    		heappush(heap, (sorted_arrays[arrIdx][arrayIdicies[arrIdx]], arrIdx))
+    	if nextVal is not None:
+    		heappush(heap, (nextVal, arrIdx))
 
     return res
+
+#print(merge_sorted_arrays([[1,2,3], [4,5,6]]))
 
 def merge_sorted_arrays_easy(As):
 	res = []
