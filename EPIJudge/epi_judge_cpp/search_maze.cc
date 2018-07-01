@@ -12,8 +12,6 @@ using std::vector;
 typedef enum { kWhite, kBlack } Color;
 
 struct Coordinate {
-  Coordinate(int a, int b) : x(a), y(b) {}
-
   bool operator==(const Coordinate& that) const {
     return x == that.x && y == that.y;
   }
@@ -22,33 +20,31 @@ struct Coordinate {
 };
 
 bool traverse(vector<vector<Color>> &maze, vector<Coordinate> &path, const Coordinate cur, const Coordinate& e) {
-  if (cur.x < 0 || cur.x >= maze[0].size() || cur.y < 0 || cur.y >= maze.size() || maze[cur.y][cur.x] == kBlack) {
-    return false;
-  }
-
+	if (cur.x < 0 || cur.x >= maze.size() || cur.y < 0 || cur.y >= maze[0].size() || maze[cur.x][cur.y] == kBlack) {
+		return false;
+	}
+ 
   if (cur == e) {
     path.emplace_back(cur);
     return true;
   }
 
-  maze[cur.y][cur.x] = kBlack;
+  maze[cur.x][cur.y] = kBlack;
   path.emplace_back(cur);
-  vector<vector<int>> directions {{-1, 0}, {0, 1}, {0, -1}, {0, 1}};
+  vector<vector<int>> directions {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
   bool status = false;
 
   for (auto &d : directions) {
-    status = status || traverse(maze, path, Coordinate(cur.x + d[0], cur.y + d[1]), e);
+	  if (traverse(maze, path, Coordinate{ cur.x + d[0], cur.y + d[1] }, e)) {
+		  return true;
+	  }
   }
 
-  if (!status) {
-    path.pop_back();
-  }
-
+  path.pop_back();
   return status;
 }
 
-vector<Coordinate> SearchMaze(vector<vector<Color>> maze, const Coordinate& s,
-                              const Coordinate& e) {
+vector<Coordinate> SearchMaze(vector<vector<Color>> maze, const Coordinate& s, const Coordinate& e) {
   vector<Coordinate> path;
   traverse(maze, path, s, e);
   return path;
