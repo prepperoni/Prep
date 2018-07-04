@@ -9,41 +9,51 @@ using std::unordered_map;
 using std::vector;
 using std::reverse;
 
-long long StringToBase10(const string &s, int base, unordered_map<char, int> &charToInt) {
+long long StringToBase10(const string &s, int base) {
 	long long result = 0;
-	long long powerVal = 1;
+	bool isNeg = s[0] == '-';
 
-	for (int i=s.size()-1; i >= 0; --i ) {
-		result += powerVal * charToInt[s[i]];
-		powerVal *= base;
+	for (int i = isNeg ? 1 : 0; i < s.size(); ++i) {
+		result *= base;
+		result += isdigit(s[i]) ? s[i] - '0' : s[i] - 'A' + 10;
 	}
 
-	std::cout << "string to base10: " << result << std::endl;
-	return result;
+	return isNeg ? result * -1 : result;
 }
 
-string Base10ToBaseN(long long num, int base, unordered_map<int, char> &intToChar) {
-	long long digits = (log(num) / log(base)) + 1;
-	auto result = vector<char>(digits, '0');
+//4273672
 
-	while (num) {
-		long long digit = log(num) / log(base);
-		long long expNum = pow(base, digit);
-		int divRes = num / expNum;
-		result[digit] = intToChar[divRes];
-		num -= divRes * expNum;
+string Base10ToBaseN(long long num, int base) {
+	vector<char> res;
+	bool isNeg = num < 0;
+
+	if (!num) {
+		return "0";
 	}
 
-	reverse(result.begin(), result.end());
-	string res = string(result.begin(), result.end());
-	return res;
+	if (isNeg) {
+		num = -num;
+	}
+
+	while (num) {
+		int modVal = num % base;
+		res.emplace_back(modVal < 10 ? '0' + modVal : 'A' + (modVal - 10));
+		num /= base;
+	}
+
+	if (isNeg) {
+		res.emplace_back('-');
+	}
+
+	reverse(res.begin(), res.end());
+	string s(res.begin(), res.end());
+
+	return s;
 }
 
 string ConvertBase(const string& num_as_string, int b1, int b2) {
-  unordered_map<int, char> intToChar = {{0,'0'},{1,'1'},{2,'2'},{3,'3'},{4,'4'},{5,'5'},{6,'6'},{7,'7'},{8,'8'},{9,'9'},{10,'A'},{11,'B'},{12,'C'},{13,'D'},{14,'E'},{15,'F'}};
-  unordered_map<char, int> charToInt = {{'0',0},{'1',1},{'2',2},{'3',3},{'4',4},{'5',5},{'6',6},{'7',7},{'8',8},{'9',9},{'A',10},{'B',11},{'C',12},{'D',13},{'E',14},{'F',15}};
-  long long base10 = StringToBase10(num_as_string, b1, charToInt);
-  return Base10ToBaseN(base10, b2, intToChar);
+  long long base10 = StringToBase10(num_as_string, b1);
+  return Base10ToBaseN(base10, b2);
 }
 
 int main(int argc, char* argv[]) {
