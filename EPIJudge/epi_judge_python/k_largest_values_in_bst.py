@@ -1,15 +1,15 @@
 def find_k_largest_in_bst(tree, k):
-    def helper(tree, k, klargest):
-    	if not tree:
+    def helper(tree):
+    	if not tree or len(klargest) == k:
     		return
-    	helper(tree.right, k, klargest)
+    	helper(tree.right)
     	if len(klargest) < k:
     		klargest.append(tree.data)
-    	helper(tree.left, k, klargest)
+    	helper(tree.left)
 
-    klist = []
-    helper(tree, k, klist)
-    return klist
+    klargest = []
+    helper(tree)
+    return klargest
 
 
 
